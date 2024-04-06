@@ -21,18 +21,16 @@ def main(context):
         return context.res.json({"ok": False, "error": err.message}, 400)
 
     gemini_key = os.environ["OPENAI_API_KEY"]
-
-    try:
+    #try:
         #response = openai.ChatCompletion.create(
         #    model="gpt-3.5-turbo",
         #    max_tokens=int(os.environ.get("OPENAI_MAX_TOKENS", "512")),
         #    messages=[{"role": "user", "content": context.req.body["prompt"]}],
         #)
         #completion = response.choices[0].message.content
-        genai.configure(api_key = gemini_key)
-        gemini_model = genai.GenerativeModel("gemini-pro")
-        chat = gemini_model.generate_content("who is Jesus")
-        return context.res.json({"ok": True, "completion": chat.text}, 200)
-
-    except Exception:
-        return context.res.json({"ok": False, "error": "Failed to query model."}, 500)
+    genai.configure(api_key = gemini_key)
+    gemini_model = genai.GenerativeModel("gemini-pro")
+    chat = gemini_model.generate_content(context.req.body["prompt"])
+    return context.res.json({"ok": True, "completion": chat.text}, 200)
+    #except Exception:
+    #return context.res.json({"ok": False, "error": "Failed to query model."}, 500)
